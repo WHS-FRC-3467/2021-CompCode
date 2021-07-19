@@ -7,6 +7,7 @@
 
 package frc.robot.Subsystems.DriveSubsystem;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -109,7 +110,7 @@ public class DriveSubsystem extends SubsystemBase
      *
      * @return the left drive encoder value
      */
-    public int getLeftEncoderValue()
+    public double getLeftEncoderValue()
     {
         return m_leftTalon1.getSelectedSensorPosition();
     }
@@ -119,7 +120,7 @@ public class DriveSubsystem extends SubsystemBase
      *
      * @return the right drive encoder value
      */
-    public int getRightEncoderValue()
+    public double getRightEncoderValue()
     {
         return m_rightTalon1.getSelectedSensorPosition();
     }
@@ -169,5 +170,12 @@ public class DriveSubsystem extends SubsystemBase
         
         return val;
 		
-	}
+    }
+    
+    public void runDriveBase(double speed)
+    {
+        //sets robot drivebase at speed
+        m_leftTalon1.set(ControlMode.PercentOutput, speed);
+        m_rightTalon1.set(ControlMode.PercentOutput, speed);
+    }
 }

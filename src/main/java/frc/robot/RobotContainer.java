@@ -4,20 +4,25 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Subsystems.DriveSubsystem.DriveSubsystem;
 import frc.robot.Subsystems.DriveSubsystem.SplitArcadeDrive;
 import frc.robot.Subsystems.Intake.IntakeSubsystem;
 import frc.robot.Subsystems.Intake.ProcessBalls;
+import frc.robot.Subsystems.Intake.RunVHopper;
 import frc.robot.Subsystems.Shooter.RunBallTower;
 import frc.robot.Subsystems.Shooter.RunShooter;
 import frc.robot.Subsystems.Shooter.ShooterSubsystem;
 import frc.robot.control.XBoxControllerDPad;
 import frc.robot.control.XboxController;
 import frc.robot.control.XboxControllerButton;
+import frc.robot.Autonomous.ThreeBallAuto;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -26,6 +31,7 @@ import frc.robot.control.XboxControllerButton;
  * scheduler calls). Instead, the structure of the robot (including subsystems,
  * commands, and button mappings) should be declared here.
  */
+
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
@@ -36,13 +42,21 @@ public class RobotContainer {
   public static XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   public static XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
-  /**
+  private final ThreeBallAuto m_threeBallAuto = new ThreeBallAuto(m_robotDrive, m_shooter);
+
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+  /** 
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
+
     configureButtonBindings();
 
+    Shuffleboard.getTab("DriveDash").add(m_chooser);
+    m_chooser.addOption("Three Ball Autoline Shot", m_threeBallAuto);
+    
     // Driver Controller
     // Split Arcade: forward/back leftY, right/left rightX
     m_robotDrive.setDefaultCommand(
@@ -75,20 +89,20 @@ public class RobotContainer {
 
         //green velocity
         new XboxControllerButton(m_operatorController, XboxController.Button.kA)
-        .whileHeld(new RunShooter(m_shooter, ShooterConstants.kGreenVelocity)); 
-        // yellow velocity
-        new XboxControllerButton(m_operatorController, XboxController.Button.kY)
-        .whileHeld(new RunShooter(m_shooter, ShooterConstants.kYellowVelocity)); 
-        //blue velocity
-        new XboxControllerButton(m_operatorController, XboxController.Button.kX)
-        .whileHeld(new RunShooter(m_shooter, ShooterConstants.kBlueVelocity)); 
-        //red
-        new XboxControllerButton(m_operatorController, XboxController.Button.kB)
-        .whileHeld(new RunShooter(m_shooter, ShooterConstants.kRedVelocity)); 
+        .whileHeld(new RunShooter(m_shooter, ShooterConstants.kAutoLine)); 
+        
         
         //run ball tower up
         new XboxControllerButton(m_operatorController, XboxController.Button.kBumperLeft)
         .whileHeld(new RunBallTower(m_shooter, 50.0)); 
+        
+        //run ball tower down
+        new XboxControllerButton(m_operatorController, XboxController.Button.kBumperRight)
+        .whileHeld(new RunBallTower(m_shooter, -50.0)); 
+        
+        //run ball tower up
+        new XboxControllerButton(m_operatorController, XboxController.Button.kBumperLeft)
+        .whileHeld(new RunVHopper(m_intake, 1.0)); 
         
         //run ball tower down
         new XboxControllerButton(m_operatorController, XboxController.Button.kBumperRight)
@@ -110,6 +124,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return m_chooser.getSelected();
   }
 }

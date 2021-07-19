@@ -76,7 +76,7 @@ public class FalconVelocity extends SubsystemBase
          return (int)((double)m_motor1.getSelectedSensorVelocity() * 600 / 2048);
      }
  
-     public int getError()
+     public double getError()
      {
          return m_motor1.getClosedLoopError();
      }

@@ -18,8 +18,7 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   // PC Intake motor
   private TalonSRX m_intakeMotor = new TalonSRX(CanConstants.intakeMotor);
-  private TalonSRX m_vHopper1 = new TalonSRX(CanConstants.vHopperMotor1);
-  private TalonSRX m_vHopper2 = new TalonSRX(CanConstants.vHopperMotor2);
+  private TalonSRX m_vHopper1 = new TalonSRX(CanConstants.vHopperMotor);
 
   // Intake Deploy/Retract solenoids
   private DoubleSolenoid m_intakePiston;
@@ -27,8 +26,6 @@ public class IntakeSubsystem extends SubsystemBase {
   public IntakeSubsystem() 
   {
     m_intakePiston = new DoubleSolenoid(PneumaticConstants.kIntakePistonDeploy, PneumaticConstants.kIntakePistonRetract);
-    m_vHopper2.setInverted(true);
-    m_vHopper2.follow(m_vHopper1);
   }
   
   public void deployIntake()

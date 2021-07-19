@@ -22,13 +22,15 @@ public final class Constants {
         //Intake  
         public static final int intakeMotor = 6;
         //VHopper
-        public static final int vHopperMotor1 =7;
-        public static final int vHopperMotor2 = 8;
-        //
+        public static final int vHopperMotor =15;
+        //Ball tower 
         public static final int ballTowerMotor = 9;
         //Shooter
-        public static final int shooterMotor1 = 10;
-        public static final int shooterMotor2 = 11;
+        public static final int shooterMotor1 = 11;
+        public static final int shooterMotor2 = 12;
+
+        public static final int shooterGateMotor = 10;
+        public static final int climberMotor = 14;
     }
     public static final class DriveConstants{
         // encoder ports
@@ -65,11 +67,10 @@ public final class Constants {
 		
         //Velocities used for shooter
         public static double kTestVelocity = 3060.0;
+		public static double kShooterGateSpeed = 0.5;
         
-        public static final Double kGreenVelocity = 1850.0;
-		public static final Double kYellowVelocity = 2370.0;
-		public static final Double kBlueVelocity = 2500.0;
-		public static final Double kRedVelocity = 2750.0; 
+
+		public static final double kAutoLine = 2370.0; 
     }
     public static final class PneumaticConstants {
         //Intake Pistons
@@ -94,3 +95,4 @@ public final class Constants {
     }
 
 }
+ 
