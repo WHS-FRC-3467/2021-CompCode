@@ -30,7 +30,8 @@ public final class Constants {
         public static final int shooterMotor2 = 12;
 
         public static final int shooterGateMotor = 10;
-        public static final int climberMotor = 14;
+
+        public static final int climberMotor = 20;
     }
     public static final class DriveConstants{
         // encoder ports
@@ -70,17 +71,22 @@ public final class Constants {
 		public static double kShooterGateSpeed = 0.5;
         
 
-		public static final double kAutoLine = 2370.0; 
+        public static final double kAutoLine = 2370.0; 
+        public static final double kWallShot = 1000.0;
+        public static final double kTrenchShot = 3000.0;
+
+        public static final double kRightAuto = 2370.0;
+        public static final double kLeftAuto = 2370.0; 
     }
     public static final class PneumaticConstants {
         //Intake Pistons
-        public static final int kIntakePistonRetract = 0;
-        public static final int kIntakePistonDeploy = 1;   
+        public static final int kIntakePistonRetract = 2;
+        public static final int kIntakePistonDeploy = 3;   
 
         //Pneumatic Constants
-        public static final int kHoodRetract = 5;
+        public static final int kHoodRetract = 4;
             //Retracted means that the shooter hood touches the shooter path
-        public static final int kHoodDeploy = 4;
+        public static final int kHoodDeploy = 5;
             //Deployed means that the shooter hood is away from the shooter path
 
     }

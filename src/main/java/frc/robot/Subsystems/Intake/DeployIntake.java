@@ -10,7 +10,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class DeployIntake extends CommandBase {
-  IntakeSubsystem m_intake;
+  
+  private final IntakeSubsystem m_intake;
+ 
   public DeployIntake(IntakeSubsystem intakeSubsystem) {
     m_intake = intakeSubsystem;
     addRequirements(m_intake);

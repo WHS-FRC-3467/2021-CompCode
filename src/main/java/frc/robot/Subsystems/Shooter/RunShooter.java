@@ -1,11 +1,12 @@
 package frc.robot.Subsystems.Shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ShooterConstants;
 
 public class RunShooter extends CommandBase{
     
-    ShooterSubsystem m_shooter;
-    double m_targetVelocity;
+    private final ShooterSubsystem m_shooter;
+    private final double m_targetVelocity;
 
     public RunShooter(ShooterSubsystem shooterSubsys, double targetVelocity)
     {
@@ -19,10 +20,9 @@ public class RunShooter extends CommandBase{
     public void execute()
     {
         m_shooter.runShooter(m_targetVelocity);
-        m_shooter.runBallTower(50.0);
 
         if(m_shooter.isWheelAtSpeed()){
-            m_shooter.runBallTower(50.0);
+            m_shooter.runShooterGate(ShooterConstants.kShooterGateSpeed);
         }    
     }
 
@@ -31,8 +31,7 @@ public class RunShooter extends CommandBase{
     public void end(boolean isFinished)
     {
         m_shooter.runShooter(0.0);
-        // m_shooter.runBallTower(0.0);
-        
+        m_shooter.runShooterGate(0.0);
     }
 
     // Returns true when the command should end.

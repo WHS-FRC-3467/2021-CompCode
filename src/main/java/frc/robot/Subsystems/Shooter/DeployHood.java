@@ -10,9 +10,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class DeployHood extends InstantCommand {
-  ShooterSubsystem m_shooter;
+  private final ShooterSubsystem m_shooter;
+
   public DeployHood(ShooterSubsystem shooter) {
     m_shooter = shooter;
+    addRequirements(m_shooter);
   }
 
   // Called when the command is initially scheduled.

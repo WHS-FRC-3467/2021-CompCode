@@ -42,6 +42,11 @@ public class DriveSubsystem extends SubsystemBase
         m_rightTalon1.configFactoryDefault();
         m_rightTalon2.configFactoryDefault();
 
+        m_leftTalon1.setInverted(true);
+        m_leftTalon2.setInverted(true);
+        m_rightTalon1.setInverted(true);
+        m_rightTalon2.setInverted(true);
+
         // Slave the second Talon on each side to the first
         m_leftTalon2.follow(m_leftTalon1);
         m_rightTalon2.follow(m_rightTalon1);

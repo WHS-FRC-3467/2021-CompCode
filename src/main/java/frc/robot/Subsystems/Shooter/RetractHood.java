@@ -10,10 +10,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class RetractHood extends InstantCommand {
-  ShooterSubsystem m_shooter;
+  private final ShooterSubsystem m_shooter;
+
   public RetractHood(ShooterSubsystem shooter) {
-    shooter = m_shooter;
-    // Use addRequirements() here to declare subsystem dependencies.
+    m_shooter = shooter;
+    addRequirements(m_shooter);
   }
 
   // Called when the command is initially scheduled.

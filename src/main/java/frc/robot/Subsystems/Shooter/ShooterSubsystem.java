@@ -24,10 +24,8 @@ public class ShooterSubsystem extends SubsystemBase {
     
     private DoubleSolenoid m_hood;
 
-    private static TalonSRX m_ballTowerMotor = new TalonSRX(CanConstants.ballTowerMotor);
-
     
-    TalonSRX m_shooterGate = new TalonSRX(CanConstants.shooterGateMotor);
+    private static TalonSRX m_shooterGate = new TalonSRX(CanConstants.shooterGateMotor);
     
     public ShooterSubsystem()
     {
@@ -132,13 +130,10 @@ public class ShooterSubsystem extends SubsystemBase {
         return m_hood.get() == Value.kForward;
     }
 
-    public void runBallTower (Double speed){
-        m_ballTowerMotor.set(ControlMode.PercentOutput, speed);
-    }
-
-    public void runShooterGate()
+    public void runShooterGate(double speed)
     {
-        m_shooterGate.set(ControlMode.PercentOutput,  ShooterConstants.kShooterGateSpeed);
+        m_shooterGate.set(ControlMode.PercentOutput,  speed);
     }
 
+    
 }

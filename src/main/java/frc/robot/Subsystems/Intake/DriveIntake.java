@@ -4,16 +4,17 @@
 
 package frc.robot.Subsystems.Intake;
 
-
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class ProcessBalls extends CommandBase {
-  IntakeSubsystem m_intake;
-  DoubleSupplier m_speed;
 
-  public ProcessBalls(IntakeSubsystem intakeSubsystem, DoubleSupplier speed) {
+public class DriveIntake extends CommandBase {
+  /** Creates a new runVhopper. */
+  private final IntakeSubsystem m_intake;
+  private final DoubleSupplier m_speed;
+
+  public DriveIntake(IntakeSubsystem intakeSubsystem, DoubleSupplier speed) {
     m_intake = intakeSubsystem;
     m_speed = speed;
     addRequirements(m_intake);
@@ -26,23 +27,13 @@ public class ProcessBalls extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_speed.getAsDouble() > 0.9){
-      m_intake.driveIntake(-m_speed.getAsDouble());
-      m_intake.driveVHopper(-m_speed.getAsDouble());
-    }
-    else if (m_speed.getAsDouble() > -0.9){
-      m_intake.driveIntake(-m_speed.getAsDouble());
-      m_intake.driveVHopper(-m_speed.getAsDouble());
-    }
-    
+    m_intake.driveIntake(m_speed.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_intake.driveIntake(0.0);
-    m_intake.driveVHopper(0.0);
-
   }
 
   // Returns true when the command should end.

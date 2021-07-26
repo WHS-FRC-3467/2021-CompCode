@@ -18,7 +18,6 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   // PC Intake motor
   private TalonSRX m_intakeMotor = new TalonSRX(CanConstants.intakeMotor);
-  private TalonSRX m_vHopper1 = new TalonSRX(CanConstants.vHopperMotor);
 
   // Intake Deploy/Retract solenoids
   private DoubleSolenoid m_intakePiston;
@@ -47,10 +46,5 @@ public class IntakeSubsystem extends SubsystemBase {
   public void driveIntake(double speed)
   {
       m_intakeMotor.set(ControlMode.PercentOutput, speed);
-  }
-
-  //Runs Vhopper motors
-  public void driveVHopper(Double speed) {
-    m_vHopper1.set(ControlMode.PercentOutput, speed);
   }
 }

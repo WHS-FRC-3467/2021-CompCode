@@ -8,20 +8,27 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
+
+import frc.robot.Sensors.Limelight.Limelight;
+import frc.robot.Subsystems.BallProcessor.BallProcessor;
+import frc.robot.Subsystems.BallProcessor.ProcessBalls;
+import frc.robot.Subsystems.Climber.ClimberSubsystem;
+import frc.robot.Subsystems.Climber.RunClimber;
 import frc.robot.Subsystems.DriveSubsystem.DriveSubsystem;
 import frc.robot.Subsystems.DriveSubsystem.SplitArcadeDrive;
 import frc.robot.Subsystems.Intake.IntakeSubsystem;
-import frc.robot.Subsystems.Intake.ProcessBalls;
-import frc.robot.Subsystems.Intake.RunVHopper;
-import frc.robot.Subsystems.Shooter.RunBallTower;
+import frc.robot.Subsystems.Intake.DriveIntake;
 import frc.robot.Subsystems.Shooter.RunShooter;
 import frc.robot.Subsystems.Shooter.ShooterSubsystem;
+
 import frc.robot.control.XBoxControllerDPad;
 import frc.robot.control.XboxController;
 import frc.robot.control.XboxControllerButton;
+
+import frc.robot.Autonomous.LeftThreeBallAuto;
+import frc.robot.Autonomous.RightThreeBallAuto;
 import frc.robot.Autonomous.ThreeBallAuto;
 
 /**
@@ -38,11 +45,16 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+  private final ClimberSubsystem m_climber = new ClimberSubsystem();
+  private final BallProcessor m_ballProcessor = new BallProcessor();
 
   public static XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   public static XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
   private final ThreeBallAuto m_threeBallAuto = new ThreeBallAuto(m_robotDrive, m_shooter);
+  private final RightThreeBallAuto m_rightThreeBallAuto = new RightThreeBallAuto(m_robotDrive, m_shooter);
+  private final LeftThreeBallAuto m_leftThreeBallAuto = new LeftThreeBallAuto(m_robotDrive, m_shooter);
+
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -54,9 +66,15 @@ public class RobotContainer {
 
     configureButtonBindings();
 
-    Shuffleboard.getTab("DriveDash").add(m_chooser);
+    Limelight.initialize();
+    Limelight.setDriverMode();
+
+
+    Shuffleboard.getTab("Driver Dash").add(m_chooser);
     m_chooser.addOption("Three Ball Autoline Shot", m_threeBallAuto);
-    
+    m_chooser.addOption("Right Side Three Ball Autoline Shot", m_rightThreeBallAuto);
+    m_chooser.addOption("Left Side Three Ball Autoline Shot", m_leftThreeBallAuto);
+
     // Driver Controller
     // Split Arcade: forward/back leftY, right/left rightX
     m_robotDrive.setDefaultCommand(
@@ -64,8 +82,13 @@ public class RobotContainer {
                             () -> m_driverController.getLeftY(), 
                             () -> m_driverController.getRightX()));
 
-    m_intake.setDefaultCommand(new ProcessBalls(m_intake, 
-                                                () -> m_operatorController.getLeftY()));
+    m_climber.setDefaultCommand(new RunClimber(m_climber, 
+                                              () -> m_operatorController.getRightY()));
+
+    m_ballProcessor.setDefaultCommand(new ProcessBalls(m_ballProcessor, 
+                                                      () ->  m_operatorController.getLeftTrigger()));
+
+    m_intake.setDefaultCommand(new DriveIntake(m_intake, () -> m_operatorController.getLeftY()));
   }
 
   /**
@@ -87,32 +110,23 @@ public class RobotContainer {
         
         //Opperator Controller
 
-        //green velocity
+        //Shoot from autoline
         new XboxControllerButton(m_operatorController, XboxController.Button.kA)
         .whileHeld(new RunShooter(m_shooter, ShooterConstants.kAutoLine)); 
         
-        
-        //run ball tower up
-        new XboxControllerButton(m_operatorController, XboxController.Button.kBumperLeft)
-        .whileHeld(new RunBallTower(m_shooter, 50.0)); 
-        
-        //run ball tower down
-        new XboxControllerButton(m_operatorController, XboxController.Button.kBumperRight)
-        .whileHeld(new RunBallTower(m_shooter, -50.0)); 
-        
-        //run ball tower up
-        new XboxControllerButton(m_operatorController, XboxController.Button.kBumperLeft)
-        .whileHeld(new RunVHopper(m_intake, 1.0)); 
-        
-        //run ball tower down
-        new XboxControllerButton(m_operatorController, XboxController.Button.kBumperRight)
-        .whileHeld(new RunBallTower(m_shooter, -50.0)); 
-        
-        // hood out
+        //Shoot from wall
+        new XboxControllerButton(m_operatorController, XboxController.Button.kB)
+        .whileHeld(new RunShooter(m_shooter, ShooterConstants.kWallShot)); 
+
+        //Shoot from trench
+        new XboxControllerButton(m_operatorController, XboxController.Button.kY)
+        .whileHeld(new RunShooter(m_shooter, ShooterConstants.kTrenchShot)); 
+
+        // hood up
 	    	new XBoxControllerDPad(m_operatorController, XboxController.DPad.kDPadUp)
         .whileActiveContinuous(new InstantCommand(m_shooter::deployHood, m_shooter)); 
         
-        //hood in
+        //hood down
 	    	new XBoxControllerDPad(m_operatorController, XboxController.DPad.kDPadDown)
         .whileActiveContinuous(new InstantCommand(m_shooter::retractHood, m_shooter)); 
   }

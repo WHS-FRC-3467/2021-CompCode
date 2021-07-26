@@ -30,7 +30,7 @@ public class Limelight extends SubsystemBase
     {
         
         // Get Driver Dashboard tab
-        ShuffleboardTab dashboardTab = Shuffleboard.getTab("DriverDash");
+        ShuffleboardTab dashboardTab = Shuffleboard.getTab("Driver Dash");
 
         // Setup Limelight parameters list on Driver Dash
         ShuffleboardLayout limelightList = dashboardTab.getLayout("Limelight", BuiltInLayouts.kList).withPosition(0, 0).withSize(1, 8);
