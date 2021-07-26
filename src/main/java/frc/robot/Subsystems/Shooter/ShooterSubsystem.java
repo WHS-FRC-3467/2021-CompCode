@@ -70,9 +70,14 @@ public class ShooterSubsystem extends SubsystemBase {
      */
     public boolean isWheelAtSpeed()
     {
-        return (Math.abs(m_speedControl.getError()) <= ShooterConstants.kShooterTolerance) && (m_speedControl.getOutputPercent() != 0);
+        return (Math.abs(m_speedControl.getError()) <= ShooterConstants.kShooterTolerance);
     }
 
+    // public boolean wheelAtSpeed() {
+    //     return ()
+        
+    // }
+    
     /**
      * void runShooter() - run the shooter at the speed commanded
      */

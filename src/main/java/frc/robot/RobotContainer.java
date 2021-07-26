@@ -13,6 +13,7 @@ import frc.robot.Constants.ShooterConstants;
 
 import frc.robot.Sensors.Limelight.Limelight;
 import frc.robot.Subsystems.BallProcessor.BallProcessor;
+import frc.robot.Subsystems.BallProcessor.ManualProcessBalls;
 import frc.robot.Subsystems.BallProcessor.ProcessBalls;
 import frc.robot.Subsystems.Climber.ClimberSubsystem;
 import frc.robot.Subsystems.Climber.RunClimber;
@@ -21,9 +22,11 @@ import frc.robot.Subsystems.DriveSubsystem.SplitArcadeDrive;
 import frc.robot.Subsystems.Intake.IntakeSubsystem;
 import frc.robot.Subsystems.Intake.DriveIntake;
 import frc.robot.Subsystems.Shooter.RunShooter;
+import frc.robot.Subsystems.Shooter.RunShooterGate;
 import frc.robot.Subsystems.Shooter.ShooterSubsystem;
 
 import frc.robot.control.XBoxControllerDPad;
+import frc.robot.control.XBoxControllerTrigger;
 import frc.robot.control.XboxController;
 import frc.robot.control.XboxControllerButton;
 
@@ -109,7 +112,12 @@ public class RobotContainer {
         .whileActiveContinuous(new InstantCommand(m_intake::retractIntake, m_intake));
         
         //Opperator Controller
-
+        new XboxControllerButton(m_operatorController, XboxController.Button.kBumperRight)
+        .whenPressed(new RunShooterGate(m_shooter).withTimeout(ShooterConstants.kShooterGateTimout)); 
+        
+        new XBoxControllerTrigger(m_operatorController, XboxController.Hand.kRight)
+        .whileActiveContinuous(new ManualProcessBalls(m_ballProcessor, 0.0)); 
+        
         //Shoot from autoline
         new XboxControllerButton(m_operatorController, XboxController.Button.kA)
         .whileHeld(new RunShooter(m_shooter, ShooterConstants.kAutoLine)); 
