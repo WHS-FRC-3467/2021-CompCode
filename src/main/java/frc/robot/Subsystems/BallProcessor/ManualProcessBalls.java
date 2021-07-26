@@ -4,19 +4,16 @@
 
 package frc.robot.Subsystems.BallProcessor;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class ProcessBalls extends CommandBase {
-  /** Creates a new ProcessBalls. */
+public class ManualProcessBalls extends CommandBase {
   private final BallProcessor m_ballProcessor;
-  private final DoubleSupplier m_speed;
-  public ProcessBalls(BallProcessor ballprocessor, DoubleSupplier speed) {
+  private final double m_speed;
+
+  public ManualProcessBalls(BallProcessor ballprocessor, double speed) {
     m_speed = speed;
     m_ballProcessor = ballprocessor;
     addRequirements(m_ballProcessor);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -26,15 +23,15 @@ public class ProcessBalls extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_ballProcessor.runVHopper(-m_speed.getAsDouble());
-    m_ballProcessor.runBallTower(-m_speed.getAsDouble());
+    m_ballProcessor.runBallTower(m_speed);
+    m_ballProcessor.runVHopper(m_speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_ballProcessor.runVHopper(0.0);
     m_ballProcessor.runBallTower(0.0);
+    m_ballProcessor.runVHopper(0.0);
   }
 
   // Returns true when the command should end.

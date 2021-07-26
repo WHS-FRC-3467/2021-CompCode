@@ -76,7 +76,8 @@ public final class Constants {
         public static final double kTrenchShot = 3000.0;
 
         public static final double kRightAuto = 2370.0;
-        public static final double kLeftAuto = 2370.0; 
+        public static final double kLeftAuto = 2370.0;
+		public static final double kShooterGateTimout = 0.2; 
     }
     public static final class PneumaticConstants {
         //Intake Pistons

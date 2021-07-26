@@ -1,29 +1,34 @@
 package frc.robot.Subsystems.Shooter;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ShooterConstants;
 
 public class RunShooter extends CommandBase{
     
     private final ShooterSubsystem m_shooter;
     private final double m_targetVelocity;
+    Timer time;
 
     public RunShooter(ShooterSubsystem shooterSubsys, double targetVelocity)
     {
+        time = new Timer();
         m_shooter = shooterSubsys;
         m_targetVelocity = targetVelocity;
-        addRequirements(m_shooter);
+        // addRequirements(m_shooter);
     }
-
+    @Override
+    public void initialize() {
+        time.start();
+    }
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute()
     {
         m_shooter.runShooter(m_targetVelocity);
 
-        if(m_shooter.isWheelAtSpeed()){
-            m_shooter.runShooterGate(ShooterConstants.kShooterGateSpeed);
-        }    
+        // if(time.get() > ShooterConstants.kShooterGateTimout){
+        //     m_shooter.runShooterGate(ShooterConstants.kShooterGateSpeed);
+        // }   
     }
 
     // Called once the command ends or is interrupted.
