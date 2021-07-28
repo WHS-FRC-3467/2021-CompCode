@@ -14,9 +14,13 @@ public class BallProcessor extends SubsystemBase {
   /** Creates a new BallProcessor. */
   // A combination of Vhopper and Ball tower
   private static TalonSRX m_vHopper = new TalonSRX(CanConstants.vHopperMotor);
+  private static TalonSRX m_vHopper2 = new TalonSRX(CanConstants.vHopperMotor2);
   private static TalonSRX m_ballTowerMotor = new TalonSRX(CanConstants.ballTowerMotor);
+  private static TalonSRX m_gateMotor = new TalonSRX(CanConstants.shooterGateMotor);
 
-  public BallProcessor() {}
+  public BallProcessor() {
+    m_vHopper2.setInverted(true);
+  }
 
   @Override
   public void periodic() {
@@ -25,10 +29,13 @@ public class BallProcessor extends SubsystemBase {
 
   public void runBallTower (double speed){
     m_ballTowerMotor.set(ControlMode.PercentOutput, speed);
+    m_gateMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public void runVHopper (double m_speed){
     m_vHopper.set(ControlMode.PercentOutput, m_speed);
+    m_vHopper2.set(ControlMode.PercentOutput, (m_speed) * 0.30);
+
   }
 
 }

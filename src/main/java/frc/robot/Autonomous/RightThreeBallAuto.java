@@ -5,6 +5,9 @@
 package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Subsystems.BallProcessor.BallProcessor;
+import frc.robot.Subsystems.BallProcessor.ManualProcessBalls;
 import frc.robot.Subsystems.DriveSubsystem.DriveSpeed;
 import frc.robot.Subsystems.DriveSubsystem.DriveSubsystem;
 import frc.robot.Subsystems.Shooter.RunShooter;
@@ -18,19 +21,20 @@ public class RightThreeBallAuto extends SequentialCommandGroup {
 
   private final ShooterSubsystem m_shooter;
   private final DriveSubsystem m_drive;
-
-  public RightThreeBallAuto(DriveSubsystem drive, ShooterSubsystem shooter) {
+  private final BallProcessor m_processor;
+  public RightThreeBallAuto(DriveSubsystem drive, ShooterSubsystem shooter, BallProcessor processor) {
     m_shooter = shooter; 
     m_drive = drive;
+    m_processor = processor;
     addRequirements(m_shooter, m_drive);
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new RunShooter(m_shooter, ShooterConstants.kRightAuto),
-      new RunShooter(m_shooter, ShooterConstants.kRightAuto),
-      new RunShooter(m_shooter, ShooterConstants.kRightAuto),
-      new RunShooter(m_shooter, ShooterConstants.kRightAuto),
-      new DriveSpeed(m_drive, 0.1, 0.0).withTimeout(1.0) 
+      new RunShooter(m_shooter, ShooterConstants.kRightAuto).withTimeout(10),
+      new WaitCommand(1),
+      new ManualProcessBalls(m_processor, 60.0).withTimeout(8),
+      new WaitCommand(5),
+      new DriveSpeed(m_drive, 0.1, 0.0)
     );
   }
 }

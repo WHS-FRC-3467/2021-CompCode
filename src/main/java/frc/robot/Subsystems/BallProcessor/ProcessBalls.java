@@ -27,7 +27,7 @@ public class ProcessBalls extends CommandBase {
   @Override
   public void execute() {
     m_ballProcessor.runVHopper(-m_speed.getAsDouble());
-    m_ballProcessor.runBallTower(-m_speed.getAsDouble());
+    m_ballProcessor.runBallTower(m_speed.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.

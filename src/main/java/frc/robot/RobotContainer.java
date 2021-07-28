@@ -22,7 +22,7 @@ import frc.robot.Subsystems.DriveSubsystem.SplitArcadeDrive;
 import frc.robot.Subsystems.Intake.IntakeSubsystem;
 import frc.robot.Subsystems.Intake.DriveIntake;
 import frc.robot.Subsystems.Shooter.RunShooter;
-import frc.robot.Subsystems.Shooter.RunShooterGate;
+// import frc.robot.Subsystems.Shooter.RunShooterGate;
 import frc.robot.Subsystems.Shooter.ShooterSubsystem;
 
 import frc.robot.control.XBoxControllerDPad;
@@ -54,8 +54,8 @@ public class RobotContainer {
   public static XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   public static XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
-  private final ThreeBallAuto m_threeBallAuto = new ThreeBallAuto(m_robotDrive, m_shooter);
-  private final RightThreeBallAuto m_rightThreeBallAuto = new RightThreeBallAuto(m_robotDrive, m_shooter);
+  private final ThreeBallAuto m_threeBallAuto = new ThreeBallAuto(m_robotDrive, m_shooter, m_ballProcessor);
+  private final RightThreeBallAuto m_rightThreeBallAuto = new RightThreeBallAuto(m_robotDrive, m_shooter, m_ballProcessor);
   private final LeftThreeBallAuto m_leftThreeBallAuto = new LeftThreeBallAuto(m_robotDrive, m_shooter);
 
 
@@ -111,12 +111,13 @@ public class RobotContainer {
         new XboxControllerButton(m_driverController, XboxController.Button.kBumperRight)
         .whileActiveContinuous(new InstantCommand(m_intake::retractIntake, m_intake));
         
-        //Opperator Controller
-        new XboxControllerButton(m_operatorController, XboxController.Button.kBumperRight)
-        .whenPressed(new RunShooterGate(m_shooter).withTimeout(ShooterConstants.kShooterGateTimout)); 
+        // //Opperator Controller
+        // new XboxControllerButton(m_operatorController, XboxController.Button.kBumperRight)
+        // .whenPressed(new RunShooterGate(m_shooter));
+        // //.withTimeout(ShooterConstants.kShooterGateTimout)); 
         
         new XBoxControllerTrigger(m_operatorController, XboxController.Hand.kRight)
-        .whileActiveContinuous(new ManualProcessBalls(m_ballProcessor, 0.0)); 
+        .whileActiveContinuous(new ManualProcessBalls(m_ballProcessor, 0.5)); 
         
         //Shoot from autoline
         new XboxControllerButton(m_operatorController, XboxController.Button.kA)
