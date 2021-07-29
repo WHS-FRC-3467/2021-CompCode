@@ -32,16 +32,16 @@ public class Limelight extends SubsystemBase
         // Get Driver Dashboard tab
         ShuffleboardTab dashboardTab = Shuffleboard.getTab("Driver Dash");
 
-        // Setup Limelight parameters list on Driver Dash
-        ShuffleboardLayout limelightList = dashboardTab.getLayout("Limelight", BuiltInLayouts.kList).withPosition(0, 0).withSize(1, 8);
+        // // Setup Limelight parameters list on Driver Dash
+        // ShuffleboardLayout limelightList = dashboardTab.getLayout("Limelight", BuiltInLayouts.kList).withPosition(0, 0).withSize(1, 8);
 
-        // Add the various Limelight return values to the "Limelight" list
-        limelightList.add("tv", 0);
-        limelightList.add("tx", 0);
-        limelightList.add("ty", 0);
-        limelightList.add("ta", 0);
-        limelightList.add("ts", 0);
-        limelightList.add("tl", 0);
+        // // Add the various Limelight return values to the "Limelight" list
+        // limelightList.add("tv", 0);
+        // limelightList.add("tx", 0);
+        // limelightList.add("ty", 0);
+        // limelightList.add("ta", 0);
+        // limelightList.add("ts", 0);
+        // limelightList.add("tl", 0);
 
         // Setup Limelight Feed on Driver Dash
         limelightFeed = new HttpCamera("limelight", "http://limelight.local:5800/stream.mjpg");

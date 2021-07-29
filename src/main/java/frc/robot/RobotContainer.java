@@ -131,6 +131,10 @@ public class RobotContainer {
         new XboxControllerButton(m_operatorController, XboxController.Button.kY)
         .whileHeld(new RunShooter(m_shooter, ShooterConstants.kTrenchShot)); 
 
+        //deep trench shot
+        new XboxControllerButton(m_operatorController, XboxController.Button.kX)
+        .whileHeld(new RunShooter(m_shooter, ShooterConstants.kDeepTrenchShot)); 
+
         // hood up
 	    	new XBoxControllerDPad(m_operatorController, XboxController.DPad.kDPadUp)
         .whileActiveContinuous(new InstantCommand(m_shooter::deployHood, m_shooter)); 
