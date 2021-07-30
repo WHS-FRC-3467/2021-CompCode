@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
 
@@ -30,8 +31,7 @@ import frc.robot.control.XBoxControllerTrigger;
 import frc.robot.control.XboxController;
 import frc.robot.control.XboxControllerButton;
 
-import frc.robot.Autonomous.LeftThreeBallAuto;
-import frc.robot.Autonomous.RightThreeBallAuto;
+import frc.robot.Autonomous.DriveWallShootThree;
 import frc.robot.Autonomous.ThreeBallAuto;
 
 /**
@@ -54,9 +54,8 @@ public class RobotContainer {
   public static XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   public static XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
-  private final ThreeBallAuto m_threeBallAuto = new ThreeBallAuto(m_robotDrive, m_shooter, m_ballProcessor);
-  private final RightThreeBallAuto m_rightThreeBallAuto = new RightThreeBallAuto(m_robotDrive, m_shooter, m_ballProcessor);
-  private final LeftThreeBallAuto m_leftThreeBallAuto = new LeftThreeBallAuto(m_robotDrive, m_shooter);
+  private final ThreeBallAuto m_threeBallAuto = new ThreeBallAuto(m_robotDrive, m_shooter, m_ballProcessor, m_intake);
+  private final DriveWallShootThree m_driveWallShootThree = new DriveWallShootThree(m_robotDrive, m_shooter,m_ballProcessor, m_intake);
 
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -74,9 +73,8 @@ public class RobotContainer {
 
 
     Shuffleboard.getTab("Driver Dash").add(m_chooser);
-    m_chooser.addOption("Three Ball Autoline Shot", m_threeBallAuto);
-    m_chooser.addOption("Right Side Three Ball Autoline Shot", m_rightThreeBallAuto);
-    m_chooser.addOption("Left Side Three Ball Autoline Shot", m_leftThreeBallAuto);
+    m_chooser.addOption("Autoline Shot Auto", m_threeBallAuto);
+    m_chooser.addOption("Wall Shot Auto", m_driveWallShootThree);
 
     // Driver Controller
     // Split Arcade: forward/back leftY, right/left rightX
@@ -130,6 +128,10 @@ public class RobotContainer {
         //Shoot from trench
         new XboxControllerButton(m_operatorController, XboxController.Button.kY)
         .whileHeld(new RunShooter(m_shooter, ShooterConstants.kTrenchShot)); 
+
+        //Shoot from trench
+        new XboxControllerButton(m_operatorController, XboxController.Button.kX)
+        .whileHeld(new RunShooter(m_shooter, ShooterConstants.kDeepTrenchShot)); 
 
         // hood up
 	    	new XBoxControllerDPad(m_operatorController, XboxController.DPad.kDPadUp)

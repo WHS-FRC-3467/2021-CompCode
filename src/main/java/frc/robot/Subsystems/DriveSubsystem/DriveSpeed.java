@@ -45,7 +45,7 @@ public class DriveSpeed extends CommandBase
     {
         // Use Slew Rate Limiter to calculate moderated values before calling arcadeDrive
         // Take the negative of the "forward" value, because the joystick Y-axis is negative in the "forward" direction.
-        m_drive.arcadeDrive((( m_forward * 0.75)), (-(m_rotation)* 0.75));
+        m_drive.arcadeDrive( m_forward, -m_rotation);
         
     }
 
