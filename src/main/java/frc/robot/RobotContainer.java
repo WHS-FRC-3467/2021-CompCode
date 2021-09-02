@@ -115,7 +115,7 @@ public class RobotContainer {
         // //.withTimeout(ShooterConstants.kShooterGateTimout)); 
         
         new XBoxControllerTrigger(m_operatorController, XboxController.Hand.kRight)
-        .whileActiveContinuous(new ManualProcessBalls(m_ballProcessor, 0.5)); 
+        .whileActiveContinuous(new ManualProcessBalls(m_ballProcessor, -0.5)); 
         
         //Shoot from autoline
         new XboxControllerButton(m_operatorController, XboxController.Button.kA)
