@@ -3,7 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-  
+
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,8 +21,9 @@ import frc.robot.Subsystems.Climber.RunClimber;
 import frc.robot.Subsystems.DriveSubsystem.DriveSubsystem;
 import frc.robot.Subsystems.DriveSubsystem.SplitArcadeDrive;
 import frc.robot.Subsystems.Intake.IntakeSubsystem;
+import frc.robot.Subsystems.Intake.ToggleIntakeDrive;
 import frc.robot.Subsystems.Intake.DriveIntake;
-import frc.robot.Subsystems.Shooter.RunShooter;
+// import frc.robot.Subsystems.Shooter.RunShooter;
 // import frc.robot.Subsystems.Shooter.RunShooterGate;
 import frc.robot.Subsystems.Shooter.ShooterSubsystem;
 
@@ -33,6 +34,7 @@ import frc.robot.control.XboxControllerButton;
 
 import frc.robot.Autonomous.DriveWallShootThree;
 import frc.robot.Autonomous.ThreeBallAuto;
+import frc.robot.CommandGroups.ShootBalls;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -109,6 +111,11 @@ public class RobotContainer {
         new XboxControllerButton(m_driverController, XboxController.Button.kBumperRight)
         .whileActiveContinuous(new InstantCommand(m_intake::retractIntake, m_intake));
         
+        //Toggle intake
+        new XboxControllerButton(m_driverController, XboxController.Button.kA)
+        .whileActiveContinuous(new ToggleIntakeDrive(m_intake));
+         
+
         // //Opperator Controller
         // new XboxControllerButton(m_operatorController, XboxController.Button.kBumperRight)
         // .whenPressed(new RunShooterGate(m_shooter));
@@ -119,19 +126,11 @@ public class RobotContainer {
         
         //Shoot from autoline
         new XboxControllerButton(m_operatorController, XboxController.Button.kA)
-        .whileHeld(new RunShooter(m_shooter, ShooterConstants.kAutoLine)); 
+        .whileHeld(new ShootBalls(m_shooter, m_ballProcessor, ShooterConstants.kAutoLine, false));
         
-        //Shoot from wall
-        new XboxControllerButton(m_operatorController, XboxController.Button.kB)
-        .whileHeld(new RunShooter(m_shooter, ShooterConstants.kWallShot)); 
-
-        //Shoot from trench
-        new XboxControllerButton(m_operatorController, XboxController.Button.kY)
-        .whileHeld(new RunShooter(m_shooter, ShooterConstants.kTrenchShot)); 
-
         //Shoot from trench
         new XboxControllerButton(m_operatorController, XboxController.Button.kX)
-        .whileHeld(new RunShooter(m_shooter, ShooterConstants.kDeepTrenchShot)); 
+        .whileHeld(new ShootBalls(m_shooter, m_ballProcessor, ShooterConstants.kDeepTrenchShot, true)); 
 
         // hood up
 	    	new XBoxControllerDPad(m_operatorController, XboxController.DPad.kDPadUp)

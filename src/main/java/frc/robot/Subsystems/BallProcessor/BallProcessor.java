@@ -29,13 +29,15 @@ public class BallProcessor extends SubsystemBase {
 
   public void runBallTower (double speed){
     m_ballTowerMotor.set(ControlMode.PercentOutput, speed);
-    m_gateMotor.set(ControlMode.PercentOutput, speed);
   }
 
-  public void runVHopper (double m_speed){
-    m_vHopper.set(ControlMode.PercentOutput, m_speed);
-    m_vHopper2.set(ControlMode.PercentOutput, (m_speed) * 0.30);
-
+  public void runVHopper (double speed){
+    m_vHopper.set(ControlMode.PercentOutput, speed);
+    m_vHopper2.set(ControlMode.PercentOutput, (speed) * 0.30);
+  }
+  
+  public void runGateMotor (double speed){
+    m_gateMotor.set(ControlMode.PercentOutput, speed);
   }
 
 }

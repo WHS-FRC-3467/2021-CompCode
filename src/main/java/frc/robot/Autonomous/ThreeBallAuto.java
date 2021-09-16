@@ -14,6 +14,7 @@ import frc.robot.Subsystems.DriveSubsystem.DriveTime;
 import frc.robot.Subsystems.Intake.IntakeSubsystem;
 import frc.robot.Subsystems.Shooter.AutonomousShoot;
 import frc.robot.Subsystems.Shooter.ShooterSubsystem;
+import frc.robot.CommandGroups.ShootBalls;
 import frc.robot.Constants.ShooterConstants;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -40,7 +41,13 @@ public class ThreeBallAuto extends SequentialCommandGroup {
       new WaitCommand(1.0),
       new ManualProcessBalls(m_processor, 0.5).withTimeout(5.0),
       new InstantCommand(m_shooter::stopShooter),
-      new DriveTime(m_drive, 1, -0.25)
+      new DriveTime(m_drive, 3, -0.25)
+      
+      // new InstantCommand(m_intake::deployIntake),
+      // new ShootBalls(shooter, processor, ShooterConstants.kAutoLine, false).withTimeout(5.0),
+      // new WaitCommand(1.0),
+      // new InstantCommand(m_shooter::stopShooter),
+      // new DriveTime(m_drive, 3, -0.25)
     );
   }
 }
