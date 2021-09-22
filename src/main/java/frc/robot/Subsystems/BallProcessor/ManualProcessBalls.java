@@ -5,14 +5,16 @@
 package frc.robot.Subsystems.BallProcessor;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Subsystems.Shooter.ShooterSubsystem;
 
 public class ManualProcessBalls extends CommandBase {
   private final BallProcessor m_ballProcessor;
   private final double m_speed;
-
-  public ManualProcessBalls(BallProcessor ballprocessor, double speed) {
+  private final ShooterSubsystem m_shooter;
+  public ManualProcessBalls(BallProcessor ballprocessor, double speed,ShooterSubsystem shooter) {
     m_speed = speed;
     m_ballProcessor = ballprocessor;
+    m_shooter = shooter;
     addRequirements(m_ballProcessor);
   }
 
@@ -25,6 +27,7 @@ public class ManualProcessBalls extends CommandBase {
   public void execute() {
     m_ballProcessor.runBallTower(m_speed);
     m_ballProcessor.runVHopper(-m_speed);
+    m_shooter.runShooterGate(m_speed);
   }
 
   // Called once the command ends or is interrupted.

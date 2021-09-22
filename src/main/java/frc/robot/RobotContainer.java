@@ -89,7 +89,7 @@ public class RobotContainer {
                                               () -> m_operatorController.getRightY()));
 
     m_ballProcessor.setDefaultCommand(new ProcessBalls(m_ballProcessor, 
-                                                      () ->  m_operatorController.getLeftTrigger()));
+                                                      () ->  m_operatorController.getLeftTrigger(), m_shooter));
 
     m_intake.setDefaultCommand(new DriveIntake(m_intake, () -> m_operatorController.getLeftY()));
   }
@@ -122,7 +122,7 @@ public class RobotContainer {
         // //.withTimeout(ShooterConstants.kShooterGateTimout)); 
         
         new XBoxControllerTrigger(m_operatorController, XboxController.Hand.kRight)
-        .whileActiveContinuous(new ManualProcessBalls(m_ballProcessor, -0.5)); 
+        .whileActiveContinuous(new ManualProcessBalls(m_ballProcessor, -0.5, m_shooter)); 
         
         //Shoot from autoline
         new XboxControllerButton(m_operatorController, XboxController.Button.kA)
