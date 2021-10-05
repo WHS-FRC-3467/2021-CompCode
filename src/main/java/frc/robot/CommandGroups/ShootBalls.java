@@ -51,6 +51,9 @@ public class ShootBalls extends CommandBase {
       if(m_shooter.isWheelAtSpeed()){
         m_processor.runGateMotor(1.0);
       }
+      else{
+        m_processor.runGateMotor(0.0);
+      }
     }
     
   }
