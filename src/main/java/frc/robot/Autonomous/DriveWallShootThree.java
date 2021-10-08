@@ -38,11 +38,11 @@ public class DriveWallShootThree extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands( 
-      new InstantCommand(m_intake::deployIntake),
+      new InstantCommand(m_intake::deployIntake, m_intake),
       new AutonomousShoot(shooter, ShooterConstants.kWallShot).withTimeout(0.1),
       new WaitCommand(1.0),
       new ManualProcessBalls(m_processor, 0.5,m_shooter).withTimeout(5.0),
-      new InstantCommand(m_shooter::stopShooter),
+      new InstantCommand(m_shooter::stopShooter, m_shooter),
       new DriveTime(m_drive, 2, -0.25)
     );
   }

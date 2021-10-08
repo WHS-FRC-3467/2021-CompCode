@@ -36,17 +36,17 @@ public class ThreeBallAuto extends SequentialCommandGroup {
     addRequirements(m_intake);
     
     addCommands(
-      new InstantCommand(m_intake::deployIntake),
+      new InstantCommand(m_intake::deployIntake, m_intake),
       new AutonomousShoot(shooter, ShooterConstants.kAutoLine).withTimeout(0.1),
       new WaitCommand(1.0),
       new ManualProcessBalls(m_processor, 0.5, m_shooter).withTimeout(5.0),
-      new InstantCommand(m_shooter::stopShooter),
+      new InstantCommand(m_shooter::stopShooter, m_shooter),
       new DriveTime(m_drive, 3, -0.25)
       
-      // new InstantCommand(m_intake::deployIntake),
+      // new InstantCommand(m_intake::deployIntake, m_intake),
       // new ShootBalls(shooter, processor, ShooterConstants.kAutoLine, false).withTimeout(5.0),
       // new WaitCommand(1.0),
-      // new InstantCommand(m_shooter::stopShooter),
+      // new InstantCommand(m_shooter::stopShooter, m_shooter),
       // new DriveTime(m_drive, 3, -0.25)
     );
   }
