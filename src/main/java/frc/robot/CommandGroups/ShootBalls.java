@@ -25,7 +25,7 @@ public class ShootBalls extends CommandBase {
     m_shooter = shooter;
     m_processor = processor;
     m_hoodPosition = hoodPosition;
-    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_shooter, m_processor);
   }
 
   // Called when the command is initially scheduled.

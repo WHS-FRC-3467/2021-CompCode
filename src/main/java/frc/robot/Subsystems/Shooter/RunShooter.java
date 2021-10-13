@@ -14,7 +14,7 @@ public class RunShooter extends CommandBase{
         time = new Timer();
         m_shooter = shooterSubsys;
         m_targetVelocity = targetVelocity;
-        // addRequirements(m_shooter);
+        addRequirements(m_shooter);
     }
     @Override
     public void initialize() {

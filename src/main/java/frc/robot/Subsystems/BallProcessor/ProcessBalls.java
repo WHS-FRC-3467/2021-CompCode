@@ -18,8 +18,7 @@ public class ProcessBalls extends CommandBase {
     m_speed = speed;
     m_shooter = shooter;
     m_ballProcessor = ballprocessor;
-    addRequirements(m_ballProcessor);
-    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_shooter, m_ballProcessor);
   }
 
   // Called when the command is initially scheduled.

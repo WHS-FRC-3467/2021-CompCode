@@ -31,10 +31,8 @@ public class DriveWallShootThree extends SequentialCommandGroup {
     m_drive = drive;
     m_processor = processor;
     m_intake = intake;
-    addRequirements(m_shooter);
-    addRequirements(m_drive);
-    addRequirements(m_processor);
-    addRequirements(m_intake);
+    addRequirements(m_shooter, m_drive, m_processor, m_intake);
+
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands( 

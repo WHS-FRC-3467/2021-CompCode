@@ -13,7 +13,7 @@ public class RunShooterGate extends CommandBase {
   /** Creates a new RunShooterGate. */
   public RunShooterGate(ShooterSubsystem shooterSubsys) {
     m_shooter = shooterSubsys;
-    // addRequirements(m_shooter); 
+    addRequirements(m_shooter); 
   }
 
   // Called when the command is initially scheduled.

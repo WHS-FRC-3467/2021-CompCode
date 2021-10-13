@@ -17,7 +17,6 @@ public class RunClimber extends CommandBase {
     m_climber = climber;
     m_speed = speed;
     addRequirements(m_climber);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
