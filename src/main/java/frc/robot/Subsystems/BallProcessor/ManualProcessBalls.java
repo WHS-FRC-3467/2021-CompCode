@@ -15,7 +15,7 @@ public class ManualProcessBalls extends CommandBase {
     m_speed = speed;
     m_ballProcessor = ballprocessor;
     m_shooter = shooter;
-    addRequirements(m_ballProcessor);
+    addRequirements(m_shooter, m_ballProcessor);
   }
 
   // Called when the command is initially scheduled.

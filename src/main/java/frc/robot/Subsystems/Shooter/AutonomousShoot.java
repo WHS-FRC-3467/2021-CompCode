@@ -16,7 +16,6 @@ public class AutonomousShoot extends CommandBase {
     m_shooter = shooter;
     m_shooterSpeed = shooterSpeed;
     addRequirements(m_shooter);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

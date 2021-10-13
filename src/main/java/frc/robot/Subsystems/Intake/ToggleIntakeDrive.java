@@ -15,7 +15,6 @@ public class ToggleIntakeDrive extends CommandBase {
   public ToggleIntakeDrive(final IntakeSubsystem intakeSubsys) {
     m_intake = intakeSubsys;
     addRequirements(m_intake);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   @Override

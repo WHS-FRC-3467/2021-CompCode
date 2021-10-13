@@ -9,6 +9,7 @@ public class IMU_ReportStatus extends CommandBase {
 	
 	public IMU_ReportStatus(IMU imu_subsys) {
 		m_imu = imu_subsys;
+		addRequirements(m_imu);
 	}
 	
 	public void initialize() {
