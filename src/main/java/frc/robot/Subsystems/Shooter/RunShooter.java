@@ -25,10 +25,6 @@ public class RunShooter extends CommandBase{
     public void execute()
     {
         m_shooter.runShooter(m_targetVelocity);
-
-        // if(time.get() > ShooterConstants.kShooterGateTimout){
-        //     m_shooter.runShooterGate(ShooterConstants.kShooterGateSpeed);
-        // }   
     }
 
     // Called once the command ends or is interrupted.
@@ -36,7 +32,6 @@ public class RunShooter extends CommandBase{
     public void end(boolean isFinished)
     {
         m_shooter.runShooter(0.0);
-        m_shooter.runShooterGate(0.0);
     }
 
     // Returns true when the command should end.

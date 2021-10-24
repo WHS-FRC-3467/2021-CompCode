@@ -43,7 +43,6 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Velocity Error", 0);
 
         m_shooterGate.setNeutralMode(NeutralMode.Brake);
-
     }
 
     /*
@@ -70,7 +69,8 @@ public class ShooterSubsystem extends SubsystemBase {
      */
     public boolean isWheelAtSpeed()
     {
-        return (Math.abs(m_speedControl.getError()) <= ShooterConstants.kShooterTolerance);
+        double absValueError = Math.abs(m_speedControl.getError());
+        return (absValueError <= ShooterConstants.kShooterTolerance);
     }
 
     // public boolean wheelAtSpeed() {

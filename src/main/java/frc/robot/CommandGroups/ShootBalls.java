@@ -45,15 +45,15 @@ public class ShootBalls extends CommandBase {
   public void execute() {
     m_shooter.runShooter(m_velocity);
 
-    if(Timer.getFPGATimestamp() - time > 0.25){
-      m_processor.runVHopper(1.0);
-      m_processor.runBallTower(1.0);
-      if(m_shooter.isWheelAtSpeed()){
-        m_processor.runGateMotor(1.0);
-      }
-      else{
-        m_processor.runGateMotor(0.0);
-      }
+    m_processor.runVHopper(1.0);
+    m_processor.runBallTower(1.0);
+    
+    if(m_shooter.isWheelAtSpeed()){
+      m_processor.runGateMotor(1.0);
+    }
+    else{
+      m_processor.runGateMotor(0.0);
+    
     }
     
   }

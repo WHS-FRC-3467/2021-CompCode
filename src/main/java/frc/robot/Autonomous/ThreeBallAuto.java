@@ -6,15 +6,12 @@ package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Subsystems.BallProcessor.BallProcessor;
-import frc.robot.Subsystems.BallProcessor.ManualProcessBalls;
+import frc.robot.Subsystems.DriveSubsystem.DriveSpeed;
 import frc.robot.Subsystems.DriveSubsystem.DriveSubsystem;
-import frc.robot.Subsystems.DriveSubsystem.DriveTime;
 import frc.robot.Subsystems.Intake.IntakeSubsystem;
-import frc.robot.Subsystems.Shooter.AutonomousShoot;
 import frc.robot.Subsystems.Shooter.ShooterSubsystem;
-// import frc.robot.CommandGroups.ShootBalls;
+import frc.robot.CommandGroups.ShootBalls;
 import frc.robot.Constants.ShooterConstants;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -36,18 +33,14 @@ public class ThreeBallAuto extends SequentialCommandGroup {
     addRequirements(m_intake);
     
     addCommands(
-      new InstantCommand(m_intake::deployIntake),
-      new AutonomousShoot(shooter, ShooterConstants.kAutoLine).withTimeout(0.1),
-      new WaitCommand(1.0),
-      new ManualProcessBalls(m_processor, 0.5, m_shooter).withTimeout(5.0),
-      new InstantCommand(m_shooter::stopShooter),
-      new DriveTime(m_drive, 3, -0.25)
       
-      // new InstantCommand(m_intake::deployIntake),
-      // new ShootBalls(shooter, processor, ShooterConstants.kAutoLine, false).withTimeout(5.0),
-      // new WaitCommand(1.0),
-      // new InstantCommand(m_shooter::stopShooter),
-      // new DriveTime(m_drive, 3, -0.25)
+      new InstantCommand(m_intake::deployIntake),
+      new ShootBalls(shooter, processor, ShooterConstants.kAutoLine, false).withTimeout(5.0),
+      new InstantCommand(m_shooter::stopShooter),
+      new InstantCommand(m_processor::stopBallTower),
+      new InstantCommand(m_processor::stopGateMotor),
+      new InstantCommand(m_processor::stopVHopper),
+      new DriveSpeed(m_drive, -0.5, 0.0).withTimeout(1.5)
     );
   }
 }

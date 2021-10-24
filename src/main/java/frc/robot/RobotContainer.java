@@ -23,8 +23,6 @@ import frc.robot.Subsystems.DriveSubsystem.SplitArcadeDrive;
 import frc.robot.Subsystems.Intake.IntakeSubsystem;
 import frc.robot.Subsystems.Intake.ToggleIntakeDrive;
 import frc.robot.Subsystems.Intake.DriveIntake;
-// import frc.robot.Subsystems.Shooter.RunShooter;
-// import frc.robot.Subsystems.Shooter.RunShooterGate;
 import frc.robot.Subsystems.Shooter.ShooterSubsystem;
 
 import frc.robot.control.XBoxControllerDPad;
@@ -32,7 +30,6 @@ import frc.robot.control.XBoxControllerTrigger;
 import frc.robot.control.XboxController;
 import frc.robot.control.XboxControllerButton;
 
-import frc.robot.Autonomous.DriveWallShootThree;
 import frc.robot.Autonomous.ThreeBallAuto;
 import frc.robot.CommandGroups.ShootBalls;
 
@@ -57,7 +54,6 @@ public class RobotContainer {
   public static XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
   private final ThreeBallAuto m_threeBallAuto = new ThreeBallAuto(m_robotDrive, m_shooter, m_ballProcessor, m_intake);
-  private final DriveWallShootThree m_driveWallShootThree = new DriveWallShootThree(m_robotDrive, m_shooter,m_ballProcessor, m_intake);
 
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -76,7 +72,6 @@ public class RobotContainer {
 
     Shuffleboard.getTab("Driver Dash").add(m_chooser);
     m_chooser.addOption("Autoline Shot Auto", m_threeBallAuto);
-    m_chooser.addOption("Wall Shot Auto", m_driveWallShootThree);
 
     // Driver Controller
     // Split Arcade: forward/back leftY, right/left rightX
@@ -114,13 +109,10 @@ public class RobotContainer {
         //Toggle intake
         new XboxControllerButton(m_driverController, XboxController.Button.kA)
         .whileActiveContinuous(new ToggleIntakeDrive(m_intake));
-         
 
-        // //Opperator Controller
-        // new XboxControllerButton(m_operatorController, XboxController.Button.kBumperRight)
-        // .whenPressed(new RunShooterGate(m_shooter));
-        // //.withTimeout(ShooterConstants.kShooterGateTimout)); 
-        
+        //operator controller
+
+        //reverse process balls
         new XBoxControllerTrigger(m_operatorController, XboxController.Hand.kRight)
         .whileActiveContinuous(new ManualProcessBalls(m_ballProcessor, -0.5, m_shooter)); 
         

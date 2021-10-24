@@ -40,4 +40,17 @@ public class BallProcessor extends SubsystemBase {
     m_gateMotor.set(ControlMode.PercentOutput, speed);
   }
 
+  public void stopGateMotor (){
+    m_gateMotor.set(ControlMode.PercentOutput, 0.0);
+  }
+
+  public void stopBallTower (){
+    m_ballTowerMotor.set(ControlMode.PercentOutput, 0.0);
+  }
+
+  public void stopVHopper (){
+    m_vHopper.set(ControlMode.PercentOutput, 0.0);
+    m_vHopper2.set(ControlMode.PercentOutput, 0.0);
+  }
+
 }
