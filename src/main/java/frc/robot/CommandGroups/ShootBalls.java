@@ -16,7 +16,7 @@ public class ShootBalls extends CommandBase {
   BallProcessor m_processor;
   double m_velocity;
   Boolean m_hoodPosition;
-  double time;
+  double m_time;
   //hood position 
   //true = back = trench shot
   //false = forward = autoline shot
@@ -25,13 +25,13 @@ public class ShootBalls extends CommandBase {
     m_shooter = shooter;
     m_processor = processor;
     m_hoodPosition = hoodPosition;
-    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_processor,m_shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    time = Timer.getFPGATimestamp();
+    m_time = Timer.getFPGATimestamp();
     if(m_hoodPosition){
       m_shooter.retractHood();
     }
@@ -43,18 +43,19 @@ public class ShootBalls extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooter.runShooter(m_velocity);
 
+    m_shooter.runShooter(m_velocity);
     m_processor.runVHopper(1.0);
     m_processor.runBallTower(1.0);
-    
-    if(m_shooter.isWheelAtSpeed()){
+    if (Timer.getFPGATimestamp()-m_time >= 0.25){
+      if(m_shooter.isWheelAtSpeed()){
       m_processor.runGateMotor(1.0);
+      }
+      else{
+        m_processor.runGateMotor(0.0);
+      }
     }
-    else{
-      m_processor.runGateMotor(0.0);
     
-    }
     
   }
 
