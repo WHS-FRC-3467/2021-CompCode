@@ -7,18 +7,21 @@ package frc.robot.Subsystems.BallProcessor;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Subsystems.Shooter.ShooterSubsystem;
 
 public class ProcessBalls extends CommandBase {
   /** Creates a new ProcessBalls. */
   private final BallProcessor m_ballProcessor;
-  private final DoubleSupplier m_speed;
-  private final ShooterSubsystem m_shooter;
-  public ProcessBalls(BallProcessor ballprocessor, DoubleSupplier speed, ShooterSubsystem shooter) {
-    m_speed = speed;
-    m_shooter = shooter;
+  private final DoubleSupplier m_fwdSpeed;
+  private final DoubleSupplier m_revSpeed;
+  
+  // This command is used to run all the Ball Processing Tower components using passed-in DoubleSuppiliers
+  // (Most commonly driven by user controls, e.g. XBox Trigger axes)
+  
+  public ProcessBalls(BallProcessor ballprocessor, DoubleSupplier fwdSpeed, DoubleSupplier revSpeed) {
+    m_fwdSpeed = fwdSpeed;
+    m_revSpeed = revSpeed;
     m_ballProcessor = ballprocessor;
-    addRequirements(m_shooter, m_ballProcessor);
+    addRequirements(m_ballProcessor);
   }
 
   // Called when the command is initially scheduled.
@@ -28,9 +31,16 @@ public class ProcessBalls extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_ballProcessor.runVHopper(-m_speed.getAsDouble());
-    m_ballProcessor.runBallTower(m_speed.getAsDouble());
-    m_shooter.runShooterGate(m_speed.getAsDouble());
+  
+    // Use the Fwd Speed control. unless it is zero, then use the Rev Speed control
+    double speed = m_fwdSpeed.getAsDouble();
+    if (speed == 0.0) {
+      speed = (-1.0) * m_revSpeed.getAsDouble();
+    }
+  
+    m_ballProcessor.runVHopper(-speed);
+    m_ballProcessor.runBallTower(speed);
+    m_ballProcessor.runGateMotor(speed);
   }
 
   // Called once the command ends or is interrupted.
@@ -38,6 +48,7 @@ public class ProcessBalls extends CommandBase {
   public void end(boolean interrupted) {
     m_ballProcessor.runVHopper(0.0);
     m_ballProcessor.runBallTower(0.0);
+    m_ballProcessor.runGateMotor(0.0);
   }
 
   // Returns true when the command should end.
