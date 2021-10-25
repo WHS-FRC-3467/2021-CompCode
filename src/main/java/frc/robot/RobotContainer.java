@@ -8,32 +8,28 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
 
 import frc.robot.Sensors.Limelight.Limelight;
 import frc.robot.Subsystems.BallProcessor.BallProcessor;
-import frc.robot.Subsystems.BallProcessor.ManualProcessBalls;
 import frc.robot.Subsystems.BallProcessor.ProcessBalls;
 import frc.robot.Subsystems.Climber.ClimberSubsystem;
 import frc.robot.Subsystems.Climber.RunClimber;
 import frc.robot.Subsystems.DriveSubsystem.DriveSubsystem;
+import frc.robot.Subsystems.DriveSubsystem.DriveTime;
 import frc.robot.Subsystems.DriveSubsystem.SplitArcadeDrive;
 import frc.robot.Subsystems.Intake.IntakeSubsystem;
 import frc.robot.Subsystems.Intake.ToggleIntakeDrive;
 import frc.robot.Subsystems.Intake.DriveIntake;
-// import frc.robot.Subsystems.Shooter.RunShooter;
-// import frc.robot.Subsystems.Shooter.RunShooterGate;
 import frc.robot.Subsystems.Shooter.ShooterSubsystem;
 
 import frc.robot.control.XBoxControllerDPad;
-import frc.robot.control.XBoxControllerTrigger;
 import frc.robot.control.XboxController;
 import frc.robot.control.XboxControllerButton;
 
-import frc.robot.Autonomous.DriveWallShootThree;
-import frc.robot.Autonomous.ThreeBallAuto;
 import frc.robot.CommandGroups.ShootBalls;
 
 /**
@@ -56,8 +52,27 @@ public class RobotContainer {
   public static XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   public static XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
-  private final ThreeBallAuto m_threeBallAuto = new ThreeBallAuto(m_robotDrive, m_shooter, m_ballProcessor, m_intake);
-  private final DriveWallShootThree m_driveWallShootThree = new DriveWallShootThree(m_robotDrive, m_shooter,m_ballProcessor, m_intake);
+  // Autonomous routines
+  
+  private final SequentialCommandGroup m_threeBallAuto = new SequentialCommandGroup (
+    
+    new InstantCommand(m_intake::deployIntake, m_intake),
+    new ParallelCommandGroup (
+      new DriveIntake(m_intake, 0.5, null).withTimeout(5.0),
+      new ShootBalls(m_shooter, m_ballProcessor, ShooterConstants.kAutoLine, false, 1.0).withTimeout(5.0)
+    ),
+    new DriveTime(m_robotDrive, 3, -0.25)
+  );
+    
+  private final SequentialCommandGroup m_driveWallShootThree = new SequentialCommandGroup (
+    
+    new DriveTime(m_robotDrive, 3, -0.25),
+    new InstantCommand(m_intake::deployIntake, m_intake),
+    new ParallelCommandGroup (
+      new DriveIntake(m_intake, 0.5, null).withTimeout(5.0),
+      new ShootBalls(m_shooter, m_ballProcessor, ShooterConstants.kWallShot, false, 1.0).withTimeout(5.0)
+    )
+  );
 
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -66,32 +81,41 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // Configure the button bindings
 
+    // Configure the button bindings
     configureButtonBindings();
 
+    // Initialize Limelight vision processor
     Limelight.initialize();
     Limelight.setDriverMode();
 
-
+    // Set up Autonomous Routine Chooser
     Shuffleboard.getTab("Driver Dash").add(m_chooser);
     m_chooser.addOption("Autoline Shot Auto", m_threeBallAuto);
     m_chooser.addOption("Wall Shot Auto", m_driveWallShootThree);
 
-    // Driver Controller
+    //
+    // Driver Controller Subsystem Defaults
+    //
     // Split Arcade: forward/back leftY, right/left rightX
     m_robotDrive.setDefaultCommand(
         new SplitArcadeDrive(m_robotDrive, 
                             () -> m_driverController.getLeftY(), 
                             () -> m_driverController.getRightX()));
 
+    //
+    // Operator Controller Subsystem Defaults
+    //
     m_climber.setDefaultCommand(new RunClimber(m_climber, 
                                               () -> m_operatorController.getRightY()));
 
     m_ballProcessor.setDefaultCommand(new ProcessBalls(m_ballProcessor, 
-                                                      () ->  m_operatorController.getLeftTrigger(), m_shooter));
+                                                        () ->  m_operatorController.getLeftTrigger(),
+                                                        () ->  m_operatorController.getRightTrigger()
+                                                      )
+                                      );
 
-    m_intake.setDefaultCommand(new DriveIntake(m_intake, () -> m_operatorController.getLeftY()));
+    m_intake.setDefaultCommand(new DriveIntake(m_intake, 0, () -> m_operatorController.getLeftY()));
   }
 
   /**
@@ -102,7 +126,10 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {  
 
-        //Driver Controller
+        //
+        // Driver Controller
+        //
+        
         //Deploy intake
         new XboxControllerButton(m_driverController, XboxController.Button.kBumperLeft)
         .whileActiveContinuous(new InstantCommand(m_intake::deployIntake, m_intake));
@@ -116,21 +143,17 @@ public class RobotContainer {
         .whileActiveContinuous(new ToggleIntakeDrive(m_intake));
          
 
-        // //Opperator Controller
-        // new XboxControllerButton(m_operatorController, XboxController.Button.kBumperRight)
-        // .whenPressed(new RunShooterGate(m_shooter));
-        // //.withTimeout(ShooterConstants.kShooterGateTimout)); 
-        
-        new XBoxControllerTrigger(m_operatorController, XboxController.Hand.kRight)
-        .whileActiveContinuous(new ManualProcessBalls(m_ballProcessor, -0.5, m_shooter)); 
+        //
+        // Operator Controller
+        //
         
         //Shoot from autoline
         new XboxControllerButton(m_operatorController, XboxController.Button.kA)
-        .whileHeld(new ShootBalls(m_shooter, m_ballProcessor, ShooterConstants.kAutoLine, false));
+        .whileHeld(new ShootBalls(m_shooter, m_ballProcessor, ShooterConstants.kAutoLine, false, 1.0));
         
         //Shoot from trench
         new XboxControllerButton(m_operatorController, XboxController.Button.kX)
-        .whileHeld(new ShootBalls(m_shooter, m_ballProcessor, ShooterConstants.kDeepTrenchShot, true)); 
+        .whileHeld(new ShootBalls(m_shooter, m_ballProcessor, ShooterConstants.kDeepTrenchShot, true, 1.0)); 
 
         // hood up
 	    	new XBoxControllerDPad(m_operatorController, XboxController.DPad.kDPadUp)
