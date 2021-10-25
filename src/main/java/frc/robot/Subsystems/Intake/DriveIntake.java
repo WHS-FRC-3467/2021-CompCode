@@ -12,11 +12,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class DriveIntake extends CommandBase {
   /** Creates a new runVhopper. */
   private final IntakeSubsystem m_intake;
-  private final DoubleSupplier m_speed;
+  private final DoubleSupplier m_speedSupplier;
+  private final double m_speed;
 
-  public DriveIntake(IntakeSubsystem intakeSubsystem, DoubleSupplier speed) {
+  public DriveIntake(IntakeSubsystem intakeSubsystem, double speed, DoubleSupplier speedSupplier) {
     m_intake = intakeSubsystem;
     m_speed = speed;
+    m_speedSupplier = speedSupplier;
     addRequirements(m_intake);
   }
 
@@ -27,7 +29,8 @@ public class DriveIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.driveIntake(-m_speed.getAsDouble());
+    double speed = (m_speedSupplier != null) ? m_speedSupplier.getAsDouble() : m_speed;
+    m_intake.driveIntake(-speed);
   }
 
   // Called once the command ends or is interrupted.
