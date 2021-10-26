@@ -118,11 +118,11 @@ public class RobotContainer {
         
         //Shoot from autoline
         new XboxControllerButton(m_operatorController, XboxController.Button.kA)
-        .whileHeld(new ShootBalls(m_shooter, m_ballProcessor, ShooterConstants.kAutoLine, false));
+        .whileHeld(new ShootBalls(m_shooter, m_ballProcessor, ShooterConstants.kAutoLine, false, 0.2));
         
         //Shoot from trench
         new XboxControllerButton(m_operatorController, XboxController.Button.kX)
-        .whileHeld(new ShootBalls(m_shooter, m_ballProcessor, ShooterConstants.kDeepTrenchShot, true)); 
+        .whileHeld(new ShootBalls(m_shooter, m_ballProcessor, ShooterConstants.kDeepTrenchShot, true, 0.2)); 
 
         // hood up
 	    	new XBoxControllerDPad(m_operatorController, XboxController.DPad.kDPadUp)

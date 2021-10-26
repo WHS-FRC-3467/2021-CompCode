@@ -35,7 +35,7 @@ public class ThreeBallAuto extends SequentialCommandGroup {
     addCommands(
       
       new InstantCommand(m_intake::deployIntake),
-      new ShootBalls(shooter, processor, ShooterConstants.kAutoLine, false).withTimeout(5.0),
+      new ShootBalls(shooter, processor, ShooterConstants.kAutoLine, false, 0.2).withTimeout(5.0),
       new InstantCommand(m_shooter::stopShooter),
       new InstantCommand(m_processor::stopBallTower),
       new InstantCommand(m_processor::stopGateMotor),
