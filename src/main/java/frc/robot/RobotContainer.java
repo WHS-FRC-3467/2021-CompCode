@@ -57,6 +57,7 @@ public class RobotContainer {
 
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+  SendableChooser<Command> m_driveMode = new SendableChooser<>();
 
   /** 
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -73,6 +74,10 @@ public class RobotContainer {
     Shuffleboard.getTab("Driver Dash").add(m_chooser);
     m_chooser.addOption("Autoline Shot Auto", m_threeBallAuto);
 
+    Shuffleboard.getTab("Driver Dash").add(m_driveMode);
+    m_driveMode.addOption("Brake Mode", new InstantCommand(m_robotDrive::brakeDriveMode));
+    m_driveMode.addOption("Coast Mode", new InstantCommand(m_robotDrive::coastDriveMode));
+
     // Driver Controller
     // Split Arcade: forward/back leftY, right/left rightX
     m_robotDrive.setDefaultCommand(
@@ -84,16 +89,16 @@ public class RobotContainer {
                                               () -> m_operatorController.getRightY()));
 
     m_ballProcessor.setDefaultCommand(new ProcessBalls(m_ballProcessor, 
-                                                      () ->  m_operatorController.getLeftTrigger(), m_shooter));
+                                                      () ->  m_operatorController.getLeftTrigger()));
 
     m_intake.setDefaultCommand(new DriveIntake(m_intake, () -> m_operatorController.getLeftY()));
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by instantiating a {@link GenericHID} or one of its subclasses
+   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
+   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {  
 
@@ -114,7 +119,7 @@ public class RobotContainer {
 
         //reverse process balls
         new XBoxControllerTrigger(m_operatorController, XboxController.Hand.kRight)
-        .whileActiveContinuous(new ManualProcessBalls(m_ballProcessor, -0.5, m_shooter)); 
+        .whileActiveContinuous(new ManualProcessBalls(m_ballProcessor, -0.5)); 
         
         //Shoot from autoline
         new XboxControllerButton(m_operatorController, XboxController.Button.kA)
@@ -122,7 +127,7 @@ public class RobotContainer {
         
         //Shoot from trench
         new XboxControllerButton(m_operatorController, XboxController.Button.kX)
-        .whileHeld(new ShootBalls(m_shooter, m_ballProcessor, ShooterConstants.kDeepTrenchShot, true, 0.2)); 
+        .whileHeld(new ShootBalls(m_shooter, m_ballProcessor, ShooterConstants.kTrenchShot, true, 0.2)); 
 
         // hood up
 	    	new XBoxControllerDPad(m_operatorController, XboxController.DPad.kDPadUp)

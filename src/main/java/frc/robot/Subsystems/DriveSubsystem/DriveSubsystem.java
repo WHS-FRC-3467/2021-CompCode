@@ -8,6 +8,7 @@
 package frc.robot.Subsystems.DriveSubsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -183,4 +184,18 @@ public class DriveSubsystem extends SubsystemBase
         m_leftTalon1.set(ControlMode.PercentOutput, speed);
         m_rightTalon1.set(ControlMode.PercentOutput, speed);
     }
+
+    public void coastDriveMode(){
+        m_leftTalon1.setNeutralMode(NeutralMode.Coast);
+        m_leftTalon2.setNeutralMode(NeutralMode.Coast);
+        m_rightTalon1.setNeutralMode(NeutralMode.Coast);
+        m_rightTalon2.setNeutralMode(NeutralMode.Coast);
+    }
+
+    public void brakeDriveMode(){
+        m_leftTalon1.setNeutralMode(NeutralMode.Brake);
+        m_leftTalon2.setNeutralMode(NeutralMode.Brake);
+        m_rightTalon1.setNeutralMode(NeutralMode.Brake);
+        m_rightTalon2.setNeutralMode(NeutralMode.Brake);
+    }       
 }

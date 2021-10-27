@@ -7,16 +7,13 @@ package frc.robot.Subsystems.BallProcessor;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Subsystems.Shooter.ShooterSubsystem;
 
 public class ProcessBalls extends CommandBase {
   /** Creates a new ProcessBalls. */
   private final BallProcessor m_ballProcessor;
   private final DoubleSupplier m_speed;
-  private final ShooterSubsystem m_shooter;
-  public ProcessBalls(BallProcessor ballprocessor, DoubleSupplier speed, ShooterSubsystem shooter) {
+  public ProcessBalls(BallProcessor ballprocessor, DoubleSupplier speed) {
     m_speed = speed;
-    m_shooter = shooter;
     m_ballProcessor = ballprocessor;
     addRequirements(m_ballProcessor);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -31,7 +28,7 @@ public class ProcessBalls extends CommandBase {
   public void execute() {
     m_ballProcessor.runVHopper(-m_speed.getAsDouble());
     m_ballProcessor.runBallTower(m_speed.getAsDouble());
-    m_shooter.runShooterGate(m_speed.getAsDouble());
+    m_ballProcessor.runGateMotor(m_speed.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
