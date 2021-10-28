@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-    new InstantCommand(m_drive::brakeDriveMode);
+    // new InstantCommand(m_drive::brakeDriveMode);
   }
 
   /** This function is called periodically during autonomous. */

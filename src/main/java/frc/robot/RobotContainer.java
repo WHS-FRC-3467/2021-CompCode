@@ -57,7 +57,7 @@ public class RobotContainer {
 
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
-  SendableChooser<Command> m_driveMode = new SendableChooser<>();
+  // SendableChooser<Command> m_driveMode = new SendableChooser<>();
 
   /** 
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -74,9 +74,9 @@ public class RobotContainer {
     Shuffleboard.getTab("Driver Dash").add(m_chooser);
     m_chooser.addOption("Autoline Shot Auto", m_threeBallAuto);
 
-    Shuffleboard.getTab("Driver Dash").add(m_driveMode);
-    m_driveMode.addOption("Brake Mode", new InstantCommand(m_robotDrive::brakeDriveMode));
-    m_driveMode.addOption("Coast Mode", new InstantCommand(m_robotDrive::coastDriveMode));
+    // Shuffleboard.getTab("Driver Dash").add(m_driveMode);
+    // m_driveMode.addOption("Brake Mode", new InstantCommand(m_robotDrive::brakeDriveMode));
+    // m_driveMode.addOption("Coast Mode", new InstantCommand(m_robotDrive::coastDriveMode));
 
     // Driver Controller
     // Split Arcade: forward/back leftY, right/left rightX

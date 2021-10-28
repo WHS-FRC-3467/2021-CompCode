@@ -142,10 +142,10 @@ public class DriveSubsystem extends SubsystemBase
         return m_leftTalon1;
     }
 
-    public WPI_TalonFX getRightTalon()
-    {
-        return m_rightTalon1;
-    }
+    // public WPI_TalonFX getRightTalon()
+    // {
+    //     //return m_rightTalon1;
+    // }
 
     /**
      * Sets the max output of the drive. Useful for scaling the drive to drive more slowly.
@@ -185,17 +185,17 @@ public class DriveSubsystem extends SubsystemBase
         m_rightTalon1.set(ControlMode.PercentOutput, speed);
     }
 
-    public void coastDriveMode(){
-        m_leftTalon1.setNeutralMode(NeutralMode.Coast);
-        m_leftTalon2.setNeutralMode(NeutralMode.Coast);
-        m_rightTalon1.setNeutralMode(NeutralMode.Coast);
-        m_rightTalon2.setNeutralMode(NeutralMode.Coast);
-    }
+    // public void coastDriveMode(){
+    //     m_leftTalon1.setNeutralMode(NeutralMode.Coast);
+    //     m_leftTalon2.setNeutralMode(NeutralMode.Coast);
+    //     m_rightTalon1.setNeutralMode(NeutralMode.Coast);
+    //     m_rightTalon2.setNeutralMode(NeutralMode.Coast);
+    // }
 
-    public void brakeDriveMode(){
-        m_leftTalon1.setNeutralMode(NeutralMode.Brake);
-        m_leftTalon2.setNeutralMode(NeutralMode.Brake);
-        m_rightTalon1.setNeutralMode(NeutralMode.Brake);
-        m_rightTalon2.setNeutralMode(NeutralMode.Brake);
-    }       
+    // public void brakeDriveMode(){
+    //     m_leftTalon1.setNeutralMode(NeutralMode.Brake);
+    //     m_leftTalon2.setNeutralMode(NeutralMode.Brake);
+    //     m_rightTalon1.setNeutralMode(NeutralMode.Brake);
+    //     m_rightTalon2.setNeutralMode(NeutralMode.Brake);
+    // }       
 }
