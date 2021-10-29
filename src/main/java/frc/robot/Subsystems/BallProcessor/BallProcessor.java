@@ -33,7 +33,7 @@ public class BallProcessor extends SubsystemBase {
 
   public void runVHopper (double speed){
     m_vHopper.set(ControlMode.PercentOutput, speed);
-    m_vHopper2.set(ControlMode.PercentOutput, (speed) * 0.30);
+    m_vHopper2.set(ControlMode.PercentOutput, (-speed) * 0.3);
   }
   
   public void runGateMotor (double speed){

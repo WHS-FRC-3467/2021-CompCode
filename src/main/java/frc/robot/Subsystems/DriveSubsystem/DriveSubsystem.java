@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.CanConstants;
@@ -31,6 +32,11 @@ public class DriveSubsystem extends SubsystemBase
     private final DifferentialDrive m_drive = new DifferentialDrive(m_leftTalon1, m_rightTalon1);
 
     private double m_last_speed = 0.0;
+    
+    boolean m_nueturalMode;
+    //coast = true
+    //brake = false
+     
 
     /**
      * Creates a new DriveSubsystem.
@@ -60,7 +66,15 @@ public class DriveSubsystem extends SubsystemBase
         m_leftTalon2.configOpenloopRamp(0.4);        
         m_rightTalon2.configOpenloopRamp(0.4);        
         m_rightTalon1.configOpenloopRamp(0.4);
+
+        coastDriveMode();
     }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putBoolean("Driver Mode Coast?", m_nueturalMode);
+    }
+  
 
     
     /**
@@ -185,17 +199,24 @@ public class DriveSubsystem extends SubsystemBase
         m_rightTalon1.set(ControlMode.PercentOutput, speed);
     }
 
-    // public void coastDriveMode(){
-    //     m_leftTalon1.setNeutralMode(NeutralMode.Coast);
-    //     m_leftTalon2.setNeutralMode(NeutralMode.Coast);
-    //     m_rightTalon1.setNeutralMode(NeutralMode.Coast);
-    //     m_rightTalon2.setNeutralMode(NeutralMode.Coast);
-    // }
+    public void coastDriveMode(){
+        m_leftTalon1.setNeutralMode(NeutralMode.Coast);
+        m_leftTalon2.setNeutralMode(NeutralMode.Coast);
+        m_rightTalon1.setNeutralMode(NeutralMode.Coast);
+        m_rightTalon2.setNeutralMode(NeutralMode.Coast);
+        m_nueturalMode = true;
+        System.out.println("Coast Mode");
+    }
 
-    // public void brakeDriveMode(){
-    //     m_leftTalon1.setNeutralMode(NeutralMode.Brake);
-    //     m_leftTalon2.setNeutralMode(NeutralMode.Brake);
-    //     m_rightTalon1.setNeutralMode(NeutralMode.Brake);
-    //     m_rightTalon2.setNeutralMode(NeutralMode.Brake);
-    // }       
+    public void brakeDriveMode(){
+        m_leftTalon1.setNeutralMode(NeutralMode.Brake);
+        m_leftTalon2.setNeutralMode(NeutralMode.Brake);
+        m_rightTalon1.setNeutralMode(NeutralMode.Brake);
+        m_rightTalon2.setNeutralMode(NeutralMode.Brake);
+        m_nueturalMode = false;
+        System.out.println("Brake Mode");
+    }      
+    public boolean getNeutralMode(){
+        return m_nueturalMode;
+    } 
 }

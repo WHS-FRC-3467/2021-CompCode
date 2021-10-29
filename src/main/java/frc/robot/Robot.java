@@ -7,8 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Subsystems.DriveSubsystem.DriveSubsystem;
+// import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -20,7 +19,6 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-  private final DriveSubsystem m_drive = new DriveSubsystem();
 
 
   /**
@@ -66,7 +64,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-    // new InstantCommand(m_drive::brakeDriveMode);
   }
 
   /** This function is called periodically during autonomous. */

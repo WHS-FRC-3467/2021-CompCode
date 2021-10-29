@@ -20,8 +20,8 @@ import frc.robot.Subsystems.Climber.ClimberSubsystem;
 import frc.robot.Subsystems.Climber.RunClimber;
 import frc.robot.Subsystems.DriveSubsystem.DriveSubsystem;
 import frc.robot.Subsystems.DriveSubsystem.SplitArcadeDrive;
+import frc.robot.Subsystems.DriveSubsystem.ToggleDriveMode;
 import frc.robot.Subsystems.Intake.IntakeSubsystem;
-import frc.robot.Subsystems.Intake.ToggleIntakeDrive;
 import frc.robot.Subsystems.Intake.DriveIntake;
 import frc.robot.Subsystems.Shooter.ShooterSubsystem;
 
@@ -74,9 +74,6 @@ public class RobotContainer {
     Shuffleboard.getTab("Driver Dash").add(m_chooser);
     m_chooser.addOption("Autoline Shot Auto", m_threeBallAuto);
 
-    // Shuffleboard.getTab("Driver Dash").add(m_driveMode);
-    // m_driveMode.addOption("Brake Mode", new InstantCommand(m_robotDrive::brakeDriveMode));
-    // m_driveMode.addOption("Coast Mode", new InstantCommand(m_robotDrive::coastDriveMode));
 
     // Driver Controller
     // Split Arcade: forward/back leftY, right/left rightX
@@ -113,21 +110,22 @@ public class RobotContainer {
         
         //Toggle intake
         new XboxControllerButton(m_driverController, XboxController.Button.kA)
-        .whileActiveContinuous(new ToggleIntakeDrive(m_intake));
+        .whenPressed(new ToggleDriveMode(m_robotDrive));
+
 
         //operator controller
 
         //reverse process balls
         new XBoxControllerTrigger(m_operatorController, XboxController.Hand.kRight)
-        .whileActiveContinuous(new ManualProcessBalls(m_ballProcessor, -0.5)); 
+        .whileActiveContinuous(new ManualProcessBalls(m_ballProcessor, -1.0)); 
         
         //Shoot from autoline
         new XboxControllerButton(m_operatorController, XboxController.Button.kA)
-        .whileHeld(new ShootBalls(m_shooter, m_ballProcessor, ShooterConstants.kAutoLine, false, 0.2));
+        .whileHeld(new ShootBalls(m_shooter, m_ballProcessor, ShooterConstants.kAutoLine, false));
         
         //Shoot from trench
         new XboxControllerButton(m_operatorController, XboxController.Button.kX)
-        .whileHeld(new ShootBalls(m_shooter, m_ballProcessor, ShooterConstants.kTrenchShot, true, 0.2)); 
+        .whileHeld(new ShootBalls(m_shooter, m_ballProcessor, ShooterConstants.kTrenchShot, true)); 
 
         // hood up
 	    	new XBoxControllerDPad(m_operatorController, XboxController.DPad.kDPadUp)
@@ -145,6 +143,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_chooser.getSelected();
+    return m_threeBallAuto;
   }
 }

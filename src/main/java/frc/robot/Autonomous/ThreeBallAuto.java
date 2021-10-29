@@ -5,7 +5,6 @@
 package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Subsystems.BallProcessor.BallProcessor;
 import frc.robot.Subsystems.DriveSubsystem.DriveSpeed;
@@ -34,14 +33,10 @@ public class ThreeBallAuto extends SequentialCommandGroup {
     addRequirements(m_intake);
     
     addCommands(
+
       
-      new InstantCommand(m_intake::deployIntake),
-      new ShootBalls(shooter, processor, ShooterConstants.kAutoLine, false, 0.2).withTimeout(2.0),
-      new ParallelCommandGroup(
-        new ShootBalls(shooter, processor, ShooterConstants.kAutoLine, false, 0.2).withTimeout(2.0),
-        new InstantCommand(m_intake::retractIntake),
-        new InstantCommand(m_intake::deployIntake)
-      ),
+      new InstantCommand(m_intake::deployIntake), 
+      new ShootBalls(m_shooter, m_processor, ShooterConstants.kAutoLine, false).withTimeout(5.0),
       new DriveSpeed(m_drive, -0.5, 0.0).withTimeout(1.5)
     );
   }
