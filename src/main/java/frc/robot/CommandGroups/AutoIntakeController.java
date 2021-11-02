@@ -10,7 +10,7 @@ import frc.robot.Subsystems.Intake.IntakeSubsystem;
 
 public class AutoIntakeController extends CommandBase {
   private final IntakeSubsystem m_intake;
-  private boolean m_done = false;
+  private boolean m_done;
   private boolean m_intakeDeployed;
   private double m_startTime;
   
@@ -24,6 +24,7 @@ public class AutoIntakeController extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_done = false;
     // deploy intake on startup
     m_intake.deployIntake();
     m_intakeDeployed = true;
@@ -35,12 +36,12 @@ public class AutoIntakeController extends CommandBase {
   public void execute() {
     double timeElapsed = Timer.getFPGATimestamp() - m_startTime;
     // wait at least 2 seconds to retract
-    if (timeElapsed >= 2.0 && !m_intakeDeployed) {
+    if (timeElapsed >= 2.0 && m_intakeDeployed) {
       m_intake.retractIntake();
       m_intakeDeployed = false;
     }
     // then wait one more second to deploy again
-    else if (timeElapsed >= 3.0 && m_intakeDeployed) {
+    else if (timeElapsed >= 3.0 && !m_intakeDeployed) {
       m_intake.deployIntake();
       m_intakeDeployed = true;
       m_done = true;
