@@ -4,13 +4,14 @@
 
 package frc.robot.Autonomous;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Subsystems.BallProcessor.BallProcessor;
 import frc.robot.Subsystems.DriveSubsystem.DriveSpeed;
 import frc.robot.Subsystems.DriveSubsystem.DriveSubsystem;
 import frc.robot.Subsystems.Intake.IntakeSubsystem;
 import frc.robot.Subsystems.Shooter.ShooterSubsystem;
+import frc.robot.CommandGroups.AutoIntakeController;
 import frc.robot.CommandGroups.ShootBalls;
 import frc.robot.Constants.ShooterConstants;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -27,16 +28,15 @@ public class ThreeBallAuto extends SequentialCommandGroup {
     m_drive = drive;
     m_processor = processor;
     m_intake = intake;
-    addRequirements(m_shooter);
-    addRequirements(m_drive);
-    addRequirements(m_processor);
-    addRequirements(m_intake);
+    addRequirements(m_shooter, m_drive, m_processor, m_intake);
     
+    // this should be fine accoring to: 
+    // https://docs.wpilib.org/en/stable/docs/software/commandbased/command-groups.html#recursive-composition-of-command-groups
     addCommands(
-
-      
-      new InstantCommand(m_intake::deployIntake), 
-      new ShootBalls(m_shooter, m_processor, ShooterConstants.kAutoLine, false).withTimeout(5.0),
+      new ParallelCommandGroup(
+        new AutoIntakeController(m_intake),
+        new ShootBalls(m_shooter, m_processor, ShooterConstants.kAutoLine, false).withTimeout(5.0)
+      ),
       new DriveSpeed(m_drive, -0.5, 0.0).withTimeout(1.5)
     );
   }
