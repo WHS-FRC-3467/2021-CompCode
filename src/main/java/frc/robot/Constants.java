@@ -76,8 +76,7 @@ public final class Constants {
 
         public static final double kAutoLine = 2050.0; 
         public static final double kTrenchShot = 4500.0;
-
-
+        
 		public static final double kShooterGateTimout = 0.2; 
     }
     public static final class PneumaticConstants {
