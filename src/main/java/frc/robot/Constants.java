@@ -65,9 +65,9 @@ public final class Constants {
     public static final class ShooterConstants{
         // Shooter Velocity Tolerance
      
-        public static final int kShooterTolerance = 450;
+        public static final int kShooterTolerance = 350;
         //double _kP, double _kI, double _kD, double _kF, int _kIzone, double _kPeakOutput
-        public static final Gains kGains_Falcon = new Gains( 0.35, 0.0, 0.0, 0.0525, 0,  1.00);
+        public static final Gains kGains_Falcon = new Gains( 0.575, 0.0, 0.0, 0.06, 0,  1.00);
 		
         //Velocities used for shooter
         public static double kTestVelocity = 3060.0;
@@ -75,7 +75,7 @@ public final class Constants {
         
 
         public static final double kAutoLine = 2050.0; 
-        public static final double kTrenchShot = 3500.0;
+        public static final double kTrenchShot = 4500.0;
 
 
 		public static final double kShooterGateTimout = 0.2; 
