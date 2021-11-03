@@ -2,6 +2,8 @@ package frc.robot.Subsystems.Shooter;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,6 +21,14 @@ public class FalconVelocity extends SubsystemBase
      double m_kD = 0.0;
      double m_kF = 0.0;
  
+    /* Current Limiting */
+    private SupplyCurrentLimitConfiguration talonCurrentLimit;
+    private final boolean ENABLE_CURRENT_LIMIT = true;
+    private final double CONTINUOUS_CURRENT_LIMIT = 25; //amps
+    private final double TRIGGER_THRESHOLD_LIMIT = 35; //amps
+    private final double TRIGGER_THRESHOLD_TIME = .2; //secs
+
+
      public FalconVelocity()
      {
  
@@ -29,8 +39,19 @@ public class FalconVelocity extends SubsystemBase
          /* Config sensor used for Primary PID [m_Velocity] */
          m_motor1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 30);
  
-         m_motor1.configClosedloopRamp(0.3);
-         m_motor2.configClosedloopRamp(0.3);        
+         //m_motor1.configClosedloopRamp(0.3);
+         //m_motor2.configClosedloopRamp(0.3);        
+         
+        /* Instead of throttle ramping, use current limits to moderate the wheel acceleration */
+         talonCurrentLimit = new SupplyCurrentLimitConfiguration(ENABLE_CURRENT_LIMIT,
+                CONTINUOUS_CURRENT_LIMIT, TRIGGER_THRESHOLD_LIMIT, TRIGGER_THRESHOLD_TIME);
+ 
+         m_motor1.configSupplyCurrentLimit(talonCurrentLimit);
+         m_motor2.configSupplyCurrentLimit(talonCurrentLimit);
+ 
+         /* Set motors to Coast */
+         m_motor1.setNeutralMode(NeutralMode.Coast);
+         m_motor2.setNeutralMode(NeutralMode.Coast);
          
          /*
           * Phase sensor accordingly. 
@@ -50,6 +71,12 @@ public class FalconVelocity extends SubsystemBase
          m_motor2.configPeakOutputForward(1.0, 30);
          m_motor2.configPeakOutputReverse(0.0, 30); // Don't go in reverse
  
+         /* Set up voltage compensation to maintain consistent velocities across a range of battery voltages */
+         m_motor1.configVoltageCompSaturation(12.0);
+         m_motor1.enableVoltageCompensation(true);
+         m_motor2.configVoltageCompSaturation(12.0);
+         m_motor2.enableVoltageCompensation(true);
+
          /* Invert motor2 and have it follow motor1 */
          m_motor2.follow(m_motor1);
          m_motor2.setInverted(true);

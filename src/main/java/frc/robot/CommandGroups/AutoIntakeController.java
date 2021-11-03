@@ -36,6 +36,7 @@ public class AutoIntakeController extends CommandBase {
   public void execute() {
     double timeElapsed = Timer.getFPGATimestamp() - m_startTime;
     // wait at least 2 seconds to retract
+    m_intake.driveIntake(1.0);
     if (timeElapsed >= 2.0 && m_intakeDeployed) {
       m_intake.retractIntake();
       m_intakeDeployed = false;

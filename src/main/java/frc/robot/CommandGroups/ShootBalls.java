@@ -46,13 +46,16 @@ public class ShootBalls extends CommandBase {
 
     m_shooter.runShooter(m_velocity);
     m_processor.runVHopper(1.0);
-    m_processor.runBallTower(1.0);
+
     if (Timer.getFPGATimestamp()-m_time >= 0.25){
       if(m_shooter.isWheelAtSpeed()){
       m_processor.runGateMotor(1.0);
+      m_processor.runBallTower(1.0);
+
       }
       else{
         m_processor.runGateMotor(0.0);
+        m_processor.runBallTower(0.0);
       }
     }
     
