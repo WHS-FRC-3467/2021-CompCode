@@ -108,11 +108,10 @@ public class RobotContainer {
         new XboxControllerButton(m_driverController, XboxController.Button.kBumperRight)
         .whileActiveContinuous(new InstantCommand(m_intake::retractIntake, m_intake));
         
-        //Toggle intake
-        new XboxControllerButton(m_driverController, XboxController.Button.kA)
+        // toggle drive mode
+        new XboxControllerButton(m_driverController, XboxController.Button.kBumperRight)
           .whenPressed(new ToggleDriveMode(m_robotDrive));
-
-
+        
         //operator controller
 
         //reverse process balls
