@@ -35,7 +35,7 @@ public class ThreeBallAuto extends SequentialCommandGroup {
     addCommands(
       new ParallelCommandGroup(
         new AutoIntakeController(m_intake),
-        new ShootBalls(m_shooter, m_processor, ShooterConstants.kAutoLine, false).withTimeout(5.0)
+        new ShootBalls(m_shooter, m_processor, ShooterConstants.kAutoLine, false).withTimeout(7.0)
       ),
       new DriveSpeed(m_drive, -0.5, 0.0).withTimeout(1.5)
     );

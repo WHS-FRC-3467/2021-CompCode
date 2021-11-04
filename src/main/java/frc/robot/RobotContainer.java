@@ -110,7 +110,7 @@ public class RobotContainer {
         
         //Toggle intake
         new XboxControllerButton(m_driverController, XboxController.Button.kA)
-        .whenPressed(new ToggleDriveMode(m_robotDrive));
+          .whenPressed(new ToggleDriveMode(m_robotDrive));
 
 
         //operator controller
