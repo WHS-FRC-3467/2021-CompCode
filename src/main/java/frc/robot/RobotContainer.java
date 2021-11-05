@@ -109,7 +109,7 @@ public class RobotContainer {
         .whileActiveContinuous(new InstantCommand(m_intake::retractIntake, m_intake));
         
         // toggle drive mode
-        new XboxControllerButton(m_driverController, XboxController.Button.kBumperRight)
+        new XboxControllerButton(m_driverController, XboxController.Button.kA)
         .whenPressed(new ToggleDriveMode(m_robotDrive));
         
         //operator controller
